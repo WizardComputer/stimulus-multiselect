@@ -1,10 +1,8 @@
 const activeSelector = "[aria-selected='true']"
 
-import { debounce } from "../helpers"
-import { get, post } from "@rails/request.js"
-import "./"
+import { Controller } from "@hotwired/stimulus"
 
-export default class extends ApplicationController {
+export default class Multiselect extends Controller {
   static targets = ["hidden", "list", "search", "preview", "dropdown", "item", "addable", "inputContainer"]
 
   static values = {
@@ -46,14 +44,12 @@ export default class extends ApplicationController {
   async searchRemote() {
     if (this.searchTarget.value === "") return
 
-    const response = await get(this.searchUrlValue, {
-      query: {
-        q: this.searchTarget.value,
-        preselects: this.selectedValue.map(x => x.value).join(",")
-      },
-      responseKind: "json"
-    })
-    const searchedItems = await response.json
+    const response = await fetch(this.searchUrlValue + "?" + new URLSearchParams({
+      q: this.searchTarget.value,
+      preselects: this.selectedValue.map(x => x.value).join(",")
+    }))
+
+    const searchedItems = await response.json()
 
     this.itemsValue = searchedItems
     this.dropdownTarget.classList.add("multiselect__dropdown--open")
@@ -76,9 +72,9 @@ export default class extends ApplicationController {
   }
 
   async preload() {
-    const response = await get(this.preloadUrlValue, { responseKind: "json" })
+    const response = await fetch(this.preloadUrlValue)
 
-    const items = await response.json
+    const items = await response.json()
     this.itemsValue = items
   }
 
@@ -258,11 +254,12 @@ export default class extends ApplicationController {
 
     if (query === "" || this.itemsValue.some(item => item.text === query)) return
 
-    const response = await post(this.addableUrlValue, {
-      query: { addable: query }, responseKind: "json"
+    const response = await fetch(this.addableUrlValue, {
+      method: "POST",
+      body: JSON.stringify({ addable: query })
     })
     if (response.ok) {
-      const addedItem = await response.json
+      const addedItem = await response.json()
 
       this.addAddableItem(addedItem)
     }
@@ -307,7 +304,7 @@ export default class extends ApplicationController {
         </div>
         <div class="multiselect__input-container" data-multiselect-target="inputContainer">${this.inputTemplate}</div>
       </div>
-      <div class="relative" data-action="click@window->multiselect#closeOnClickOutside">
+      <div style="position: relative;" data-action="click@window->multiselect#closeOnClickOutside">
         <div class="multiselect__dropdown" data-multiselect-target="dropdown">
           <ul class="multiselect__list" data-multiselect-target="list">
             ${this.allItems}
@@ -318,10 +315,10 @@ export default class extends ApplicationController {
   }
 
   get noResultsTemplate() {
-    if (!this.addableUrlValue) return `<div class="p-3 text-grey-semidark text-sm">${this.element.dataset.noResultsMessage}</div>`
+    if (!this.addableUrlValue) return `<div class="multiselect__no-result">${this.element.dataset.noResultsMessage}</div>`
     return `
-      <div class="text-grey-semidark text-sm p-3">
-        <span class="btn btn--secondary" data-action="click->multiselect#addableEvent">
+      <div class="multiselect__no-result">
+        <span class="multiselect__addable-button" data-action="click->multiselect#addableEvent">
           ${this.element.dataset.addablePlaceholder}
         </span>
       </div>
@@ -373,7 +370,8 @@ export default class extends ApplicationController {
     `
   }
 
-  checkBoxChange({ currentTarget }) {
+  checkBoxChange(event) {
+    event.preventDefault()
     this.searchTarget.focus()
     this.toggleItem(currentTarget)
   }
@@ -396,3 +394,15 @@ export default class extends ApplicationController {
     }
   }
 }
+
+function debounce(fn, delay) {
+  let timeoutId = null
+
+  return (...args) => {
+    const callback = () => fn.apply(this, args)
+    clearTimeout(timeoutId)
+    timeoutId = setTimeout(callback, delay)
+  }
+}
+
+export { Multiselect }

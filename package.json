@@ -24,8 +24,7 @@
     },
     "homepage": "https://github.com/BakiVernes/stimulus-multiselect",
     "peerDependencies": {
-      "@hotwired/stimulus": "^3.1.0",
-      "@rails/request.js": "^0.0.6"
+      "@hotwired/stimulus": "^3.1.0"
     },
     "devDependencies": {
       "@hotwired/stimulus": "^3.1.0",
@@ -33,7 +32,7 @@
       "http-server": "^14.0.0"
     },
     "scripts": {
-      "start": "http-server ./examples -p 3030",
+      "start": "http-server ./examples -p 3000",
       "postversion": "git push && git push --tags",
       "release": "yarn test && yarn version && npm adduser && npm publish"
     }
