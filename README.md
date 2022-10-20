@@ -8,7 +8,7 @@ Multiselect component built on the back of stimulus and html select tag. Works w
 If you are using a js bundler with `node_modules` support (such as esbuild, rollup.js or Webpack) install the package from npm:
 
 ```plain
-yarn add stimulus-autocomplete
+yarn add stimulus-multiselect
 ```
 
 If you're using [importmap-rails](https://github.com/rails/importmap-rails), you'll need to pin `stimulus-multiselect`:
