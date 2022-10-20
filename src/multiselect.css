@@ -186,6 +186,16 @@
   display: flex;
 }
 
+.multiselect__list li:first-child {
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+}
+
+.multiselect__list li:last-child {
+  border-bottom-left-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+}
+
 .multiselect__list li input {
   margin-right: 0.75rem;
 }

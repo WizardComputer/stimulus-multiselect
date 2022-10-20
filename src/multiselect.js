@@ -57,18 +57,29 @@ export default class Multiselect extends Controller {
 
   searchLocal() {
     this.dropdownTarget.classList.add("multiselect__dropdown--open")
-    if (this.searchTarget.value === "") return this.listTarget.innerHTML = this.items(this.itemsValue)
+    if (this.searchTarget.value === "") {
+      let theRestOfTheItems = this.itemsValue.filter(x => !this.selectedValue.map(y => y.value).includes(x.value))
+      this.listTarget.innerHTML = this.selectedItems
+      this.listTarget.insertAdjacentHTML("beforeend", this.items(theRestOfTheItems))
+    }
 
     let searched = this.itemsValue.filter(item => {
       return item.text.toLowerCase().includes(this.searchTarget.value.toLowerCase())
     })
+
+    let selectedSearched = this.selectedValue.filter(item => {
+      return item.text.toLowerCase().includes(this.searchTarget.value.toLowerCase())
+    })
+
+    searched = searched.filter(x => !selectedSearched.map(y => y.value).includes(x.value))
 
     if (searched.length === 0 && this.addableUrlValue) {
       return this.listTarget.innerHTML = this.noResultsTemplate
     }
 
     if (searched.length === 0) this.dropdownTarget.classList.remove("multiselect__dropdown--open")
-    this.listTarget.innerHTML = this.items(searched)
+    this.listTarget.innerHTML = this.items(selectedSearched, true)
+    this.listTarget.insertAdjacentHTML("beforeend", this.items(searched))
   }
 
   async preload() {
@@ -125,7 +136,6 @@ export default class Multiselect extends Controller {
     if (this.selectedValue.length > 0) {
       this.previewTarget.innerHTML = this.pills
       this.searchTarget.style.paddingTop = "0.5rem"
-      this.inputContainerTarget.style.display = "none"
 
       this.selectedValue.forEach(selected => {
         const option = document.createElement("option")
@@ -226,7 +236,7 @@ export default class Multiselect extends Controller {
     this.element.dispatchEvent(new CustomEvent("multiselect-removed", { detail: { id: value } }))
   }
 
-  onEnterKeydown = () => {
+  onEnterKeydown = (e) => {
     if (this.focusedItem) this.focusedItem.click()
   }
 
@@ -363,7 +373,7 @@ export default class Multiselect extends Controller {
       <li>
         <label>
           <input type="checkbox" ${ selected } data-value="${item.value}" data-text="${item.text}"
-          data-action="multiselect#checkBoxChange" data-multiselect-target="item">
+          data-action="multiselect#checkBoxChange" data-multiselect-target="item" tabindex="-1">
           <span>${item.text}</span>
         </label>
       </li>
@@ -373,7 +383,7 @@ export default class Multiselect extends Controller {
   checkBoxChange(event) {
     event.preventDefault()
     this.searchTarget.focus()
-    this.toggleItem(currentTarget)
+    this.toggleItem(event.currentTarget)
   }
 
   pillTemplate(item) {
