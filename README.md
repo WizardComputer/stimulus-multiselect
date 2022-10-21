@@ -32,15 +32,17 @@ application.register('multiselect', Multiselect)
 
 ### Remote search
 
-To use the multiselect as a remote search component, you need some the following markup:
+Fetches the data from the server by specifying endpoint url in `data-multiselect-search-url` attribute.
+This is useful when you have a lot of data to load and you don't want to load it all at once.
 
+Example:
 ```html
 <div data-controller="multiselect" data-multiselect-search-url-value="/cars" data-placeholder="Search for cars...">
   <select multiple="multiple" class="multiselect__hidden" data-multiselect-target="hidden" name="form[test_ids][]" id="form_test_ids"></select>
 </div>
 ```
 
-The component makes a request to the data-multiselect-search-url to fetch results for the contents of the input field. The server must answer with a json array:
+The component makes a request to the `data-multiselect-search-url` to fetch results for the contents of the input field. The server must answer with a json array:
 
 ```json
 [
@@ -67,12 +69,14 @@ The component makes a request to the data-multiselect-search-url to fetch result
 ]
 ```
 
-Note: each object has to contain `value` and `text`. The server will receive a `q` query param that represents the search term. Another query param sent while searching is the `preselects` param that contains a set of already selected values in the multiselect (a string separated by a comma ",").
+**Note**: each object has to contain `value` and `text`. The server will receive a `q` query param that represents the search term. Another query param sent while searching is the `preselects` param that contains a set of already selected values in the multiselect (a string separated by a comma ",").
 
 ### Preload
 
-To preload items after rendering the page, you need some the following markup:
+Fetches the data from the server when the page renders by specifying endpoint url in `data-preload-preload-url` attribute.
+This is useful for small to medium size datasets that will not slow the page load.
 
+Example:
 ```html
 <div data-controller="multiselect" data-multiselect-preload-url-value="/cars" data-placeholder="Search for cars...">
   <select multiple="multiple" class="multiselect__hidden" data-multiselect-target="hidden" name="form[test_ids][]" id="form_test_ids"></select>
@@ -81,7 +85,7 @@ To preload items after rendering the page, you need some the following markup:
 
 With this setup the component will search through the already preloaded components. In order to search remotely as well as preloading components we just need to add the `data-multiselect-search-url-value` attribute.
 
-Note: the server response for the preload url needs to provide a json array just like in the example above.
+**Note**: the server response for the preload url needs to provide a json array just like in the example above.
 
 ### Static collection
 
@@ -102,8 +106,6 @@ document.getElementById("multiselect_id").values
 ```
 
 - The multiselect comes with a .css file with some styles but feel free to change it when using it in your app.
-
-TODO: Explain addable
 
 ### Accessibility
 
@@ -140,6 +142,12 @@ The current examples are contained in the [examples folder](https://github.com/W
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/WizardComputer/stimulus-multiselect. Any contributions or suggestions are wellcome and will be considered. Please read the [Contributor Covenant code of conduct](https://www.contributor-covenant.org/).
+
+
+## TODO
+* Explain addable
+* Explain preselecting
+
 
 ## Releasing
 
