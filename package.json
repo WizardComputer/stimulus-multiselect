@@ -1,40 +1,43 @@
 {
-    "name": "stimulus-multiselect",
-    "version": "3.0.2",
-    "description": "Multiselect component built on the back of stimulus and html select tag",
-    "type": "module",
-    "main": "src/multiselect.js",
-    "exports": "./src/multiselect.js",
-    "source": "src/multiselect.js",
-    "author": "Vernes Pendić <vernes.pendic@gmail.com>",
-    "license": "MIT",
-    "private": false,
-    "keywords": [
-      "stimulus",
-      "multiselect",
-      "controller",
-      "components"
-    ],
-    "repository": {
-      "type": "git",
-      "url": "https://github.com/BakiVernes/stimulus-multiselect"
-    },
-    "bugs": {
-      "url": "https://github.com/BakiVernes/stimulus-multiselect/issues"
-    },
-    "homepage": "https://github.com/BakiVernes/stimulus-multiselect",
-    "peerDependencies": {
-      "@hotwired/stimulus": "^3.1.0"
-    },
-    "devDependencies": {
-      "@hotwired/stimulus": "^3.1.0",
-      "@rails/request.js": "^0.0.6",
-      "http-server": "^14.0.0"
-    },
-    "scripts": {
-      "start": "http-server ./examples -p 3000",
-      "postversion": "git push && git push --tags",
-      "release": "yarn test && yarn version && npm adduser && npm publish"
-    }
+  "name": "stimulus-multiselect",
+  "version": "3.0.2",
+  "description": "Multiselect component built on the back of stimulus and html select tag",
+  "type": "module",
+  "main": "src/multiselect.js",
+  "exports": "./src/multiselect.js",
+  "source": "src/multiselect.js",
+  "author": "Vernes Pendić <vernes.pendic@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "keywords": [
+    "stimulus",
+    "multiselect",
+    "controller",
+    "components"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BakiVernes/stimulus-multiselect"
+  },
+  "bugs": {
+    "url": "https://github.com/BakiVernes/stimulus-multiselect/issues"
+  },
+  "homepage": "https://github.com/BakiVernes/stimulus-multiselect",
+  "peerDependencies": {
+    "@hotwired/stimulus": "^3.1.0"
+  },
+  "devDependencies": {
+    "@hotwired/stimulus": "^3.1.0",
+    "@rails/request.js": "^0.0.6",
+    "cypress": "^9.2.0",
+    "http-server": "^14.0.0",
+    "start-server-and-test": "^1.14.0"
+  },
+  "scripts": {
+    "start": "http-server ./examples -p 3300",
+    "cy:run": "cypress run",
+    "test": "start-server-and-test start http://localhost:3300 cy:run",
+    "postversion": "git push && git push --tags",
+    "release": "yarn test && yarn version && npm adduser && npm publish"
   }
-  
+}
