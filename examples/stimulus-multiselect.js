@@ -1,1 +1,1 @@
-C:/Users/Baki/Desktop/kodiranje/stimulus-multiselect/src/multiselect.js
+../src/multiselect.js
