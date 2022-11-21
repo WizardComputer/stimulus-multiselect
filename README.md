@@ -24,7 +24,7 @@ controller with it:
 
 ```javascript
 import { Application } from '@hotwired/stimulus'
-import { Multiselect } from 'stimulus-multiselect'
+import { Multiselect } from '@wizardhealth/stimulus-multiselect'
 
 const application = Application.start()
 application.register('multiselect', Multiselect)
